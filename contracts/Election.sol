@@ -9,7 +9,7 @@ contract Election {
     }
     
     mapping(uint => Candidate) public candidates;
-    uint public candidateCount;
+    uint public candidatecount;
     mapping(address => bool) public voter;
     
     constructor() public {
@@ -18,13 +18,13 @@ contract Election {
     }
     
     function addCandidate(string memory _name) private {
-        candidateCount++;
-        candidates[candidateCount] = Candidate(candidateCount, _name, 0);
+        candidatecount++;
+        candidates[candidatecount] = Candidate(candidatecount, _name, 0);
     }
     
     function vote(uint _candidateId) public {
         require(!voter[msg.sender]);
-        require(_candidateId > 0 && _candidateId<= candidateCount);
+        require(_candidateId > 0 && _candidateId <= candidatecount);
         
         voter[msg.sender] = true;       
         candidates[_candidateId].voteCount++;

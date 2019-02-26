@@ -14,6 +14,10 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+              candidates: [],
+              hasVoted: false,
+              loading: false,
+              voteCandidate: ,
               tronWeb: {
                   installed: false,
                   loggedIn: false
@@ -101,6 +105,11 @@ class App extends React.Component {
 
 
     }
+
+    async fetchData(){
+      const candidateCount = (await Utils.contract.candidatecount().call()).toNumber();
+      console.log(">>> candidateCount >>>", candidateCount);
+    } 
 
 
     render() {
