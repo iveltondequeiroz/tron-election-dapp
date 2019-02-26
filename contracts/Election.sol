@@ -1,4 +1,4 @@
-pragma solidity ^0.5.4;
+pragma solidity ^0.5.0;
 
 contract Election {
     
@@ -13,14 +13,21 @@ contract Election {
     mapping(address => bool) public voter;
     
     constructor() public {
-        
+        addCandidate("Alice");
+        addCandidate("Bob");
     }
     
-    function addCandidate(string _name) private {
-        
+    function addCandidate(string memory _name) private {
+        candidateCount++;
+        candidates[candidateCount] = Candidate(candidateCount, _name, 0);
     }
     
     function vote(uint _candidateId) public {
+        require(!voter[msg.sender]);
+        require(_candidateId > 0 && _candidateId<= candidateCount);
         
-    }   
+        voter[msg.sender] = true;       
+        candidates[_candidateId].voteCount++;
+    }
+    
 }
