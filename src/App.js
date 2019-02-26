@@ -17,7 +17,6 @@ class App extends React.Component {
               candidates: [],
               hasVoted: false,
               loading: false,
-              voteCandidate: ,
               tronWeb: {
                   installed: false,
                   loggedIn: false
@@ -102,15 +101,23 @@ class App extends React.Component {
             });
         }
         await Utils.setTronWeb(window.tronWeb);
-
+        this.fetchData();
 
     }
 
     async fetchData(){
-      const candidateCount = (await Utils.contract.candidatecount().call()).toNumber();
-      console.log(">>> candidateCount >>>", candidateCount);
+        const candidateCount = (await Utils.contract.candidatecount().call()).toNumber();
+        for(let i=1; i<=candidateCount; i++) {
+            const candidate = (await Utils.contract.candidates(i).call());
+            const candidates = [...this.state.candidates];
+            candidates.push({
+                id: candidate.id.toNumber(),
+                name: candidate.name,
+                voteCount: candidate.voteCount.toNumber()
+            });
+            this.setState({candidates});
+        }
     } 
-
 
     render() {
         if(!this.state.tronWeb.installed)
